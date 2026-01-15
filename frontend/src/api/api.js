@@ -11,6 +11,11 @@ export const checkAuthStatus = async () => {
 
 export const getLoginUrl = () => `${API_BASE}/auth/login`;
 
+export const logout = async () => {
+  const res = await fetch(`${API_BASE}/auth/logout`, { method: 'POST' });
+  return res.json();
+};
+
 // Settings endpoints
 export const checkGeminiStatus = async () => {
   const res = await fetch(`${API_BASE}/settings/gemini/status`);
@@ -52,7 +57,11 @@ export const getEmailSummaries = async (filters = {}) => {
       queryParams.append(key, value);
     }
   });
-  const url = `${API_BASE}/emails/summaries${queryParams.toString() ? '?' + queryParams : ''}`;
+
+  // Add timestamp for cache busting
+  queryParams.append('_t', new Date().getTime());
+
+  const url = `${API_BASE}/emails/summaries?${queryParams.toString()}`;
   const res = await fetch(url);
   return res.json();
 };

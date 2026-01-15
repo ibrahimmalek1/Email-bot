@@ -7,7 +7,7 @@ from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from typing import Optional
 
-from app.services import oauth_service
+from app.services import oauth_service, storage
 
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
@@ -143,6 +143,13 @@ async def google_callback(code: str = None, error: str = None):
     if not code:
         raise HTTPException(status_code=400, detail="No authorization code received")
     
+    # IMPORTANT: Clear old data BEFORE saving new token
+    # This ensures clean slate when switching accounts
+    print("Auth Callback: Clearing old data before new login...")
+    storage.clear_all_summaries()
+    oauth_service.logout()  # Delete old token
+    print("Auth Callback: Old data cleared.")
+    
     result = oauth_service.handle_oauth_callback(code)
     
     if result["success"]:
@@ -151,6 +158,7 @@ async def google_callback(code: str = None, error: str = None):
         <!DOCTYPE html>
         <html>
         <head>
+            <meta http-equiv="refresh" content="3;url=http://localhost:5173/emails" />
             <style>
                 body {{
                     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -165,19 +173,19 @@ async def google_callback(code: str = None, error: str = None):
                 .avatar {{ width: 80px; height: 80px; border-radius: 50%; margin-bottom: 20px; }}
                 h1 {{ color: #333; }}
                 p {{ color: #666; }}
-                a {{
-                    display: inline-block; margin-top: 20px; padding: 12px 24px;
-                    background: #4285f4; color: white; text-decoration: none; border-radius: 8px;
-                }}
             </style>
+            <script>
+                setTimeout(function() {{
+                    window.location.href = "http://localhost:5173/emails";
+                }}, 2000);
+            </script>
         </head>
         <body>
             <div class="container">
                 <img src="{user.get('picture', 'https://via.placeholder.com/80')}" class="avatar" alt="Profile">
                 <h1>✅ Welcome, {user.get('name', 'User')}!</h1>
                 <p>Logged in as: {user.get('email', 'unknown')}</p>
-                <p>You can now fetch and summarize your emails.</p>
-                <a href="/docs">Go to API Docs</a>
+                <p>Redirecting to dashboard...</p>
             </div>
         </body>
         </html>
@@ -196,6 +204,7 @@ async def google_callback(code: str = None, error: str = None):
 
 @router.post("/logout")
 async def logout():
-    """Logout - removes stored authentication token"""
+    """Logout - removes stored authentication token and clears local data"""
     oauth_service.logout()
-    return {"success": True, "message": "Logged out successfully"}
+    storage.clear_all_summaries()
+    return {"success": True, "message": "Logged out and data cleared"}

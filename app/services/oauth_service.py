@@ -83,7 +83,7 @@ def get_auth_url() -> Optional[str]:
         auth_url, _ = flow.authorization_url(
             access_type='offline',
             include_granted_scopes='true',
-            prompt='consent'
+            prompt='consent select_account'
         )
         
         return auth_url
@@ -200,10 +200,22 @@ def get_user_info(credentials: Credentials = None) -> Optional[Dict[str, str]]:
 def logout() -> bool:
     """Remove stored token (logout user)"""
     try:
+        print("OAuth: Logout called - deleting token file...")
         if os.path.exists(TOKEN_FILE):
             os.remove(TOKEN_FILE)
+            print(f"OAuth: Token file deleted: {TOKEN_FILE}")
+        else:
+            print("OAuth: No token file to delete")
+        
+        # Also delete summaries file to ensure clean slate
+        summaries_file = os.path.join(DATA_DIR, "summaries.json")
+        if os.path.exists(summaries_file):
+            os.remove(summaries_file)
+            print(f"OAuth: Summaries file deleted: {summaries_file}")
+            
         return True
-    except:
+    except Exception as e:
+        print(f"OAuth: Logout error: {e}")
         return False
 
 

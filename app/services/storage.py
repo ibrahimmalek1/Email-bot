@@ -35,6 +35,18 @@ def _save_summaries(summaries: List[dict]) -> None:
         json.dump(summaries, f, indent=2, default=str)
 
 
+def clear_all_summaries() -> bool:
+    """Clear all stored summaries"""
+    try:
+        print("Storage: Clearing all summaries...")
+        _save_summaries([])
+        print("Storage: Summaries cleared successfully.")
+        return True
+    except Exception as e:
+        print(f"Error clearing summaries: {e}")
+        return False
+
+
 def save_summary(summary: EmailSummary) -> bool:
     """
     Save a single email summary to storage
@@ -154,6 +166,9 @@ def get_filtered_summaries(
     
     if action_required is not None:
         summaries = [s for s in summaries if s.action_required == action_required]
+        
+    # Always sort by date descending (Newest First)
+    summaries.sort(key=lambda x: x.date, reverse=True)
     
     if has_attachments is not None:
         summaries = [s for s in summaries if s.has_attachments == has_attachments]

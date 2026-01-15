@@ -15,21 +15,17 @@ from app.services.oauth_service import get_credentials, is_authenticated
 class GmailService:
     """Service to fetch emails using Gmail API (OAuth)"""
     
-    def __init__(self):
-        self.service = None
-    
-    def connect(self) -> bool:
+    def connect(self):
         """Connect to Gmail API using stored OAuth credentials"""
         credentials = get_credentials()
         if not credentials:
-            return False
+            return None
         
         try:
-            self.service = build('gmail', 'v1', credentials=credentials)
-            return True
+            return build('gmail', 'v1', credentials=credentials)
         except Exception as e:
             print(f"Gmail API connection error: {e}")
-            return False
+            return None
     
     def _decode_body(self, payload: dict) -> str:
         """Extract and decode email body from Gmail API payload"""
@@ -84,9 +80,9 @@ class GmailService:
         Returns:
             Dict containing 'emails' list and 'next_page_token'
         """
-        if not self.service:
-            if not self.connect():
-                return {"emails": [], "next_page_token": None}
+        service = self.connect()
+        if not service:
+             return {"emails": [], "next_page_token": None}
         
         emails = []
         next_token = None
@@ -96,7 +92,7 @@ class GmailService:
             query = f"newer_than:{days_back}d"
             
             # List messages
-            results = self.service.users().messages().list(
+            results = service.users().messages().list(
                 userId='me',
                 q=query,
                 maxResults=limit,
@@ -109,7 +105,7 @@ class GmailService:
             for msg_info in messages:
                 try:
                     # Get full message
-                    msg = self.service.users().messages().get(
+                    msg = service.users().messages().get(
                         userId='me',
                         id=msg_info['id'],
                         format='full'

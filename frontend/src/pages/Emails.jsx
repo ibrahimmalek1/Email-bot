@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { getEmailSummaries } from '../api/api';
+import { getEmailSummaries, fetchEmails } from '../api/api';
 import EmailCard from '../components/EmailCard';
 import FilterBar from '../components/FilterBar';
 import SummaryWidget from '../components/SummaryWidget';
@@ -75,6 +75,19 @@ function Emails() {
         setSearchParams({});
     };
 
+    const handleSync = async () => {
+        setLoading(true);
+        try {
+            // Fetch 10 most recent emails
+            await fetchEmails({ limit: 10, days_back: 7 });
+            await loadEmails(); // Reload from storage
+        } catch (err) {
+            console.error('Sync failed:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="emails-page">
             <div className="emails-main">
@@ -84,6 +97,9 @@ function Emails() {
                         <span className="email-count">
                             {loading ? '...' : `${emails.length} of ${total}`}
                         </span>
+                        <button className="sync-btn" onClick={handleSync} disabled={loading} title="Fetch new emails">
+                            🔄 Sync
+                        </button>
                     </div>
                     <div className="search-box">
                         <input

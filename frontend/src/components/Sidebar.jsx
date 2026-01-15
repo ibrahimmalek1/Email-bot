@@ -1,13 +1,16 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { getLoginUrl } from '../api/api';
+import { getLoginUrl, logout } from '../api/api';
 import './Sidebar.css';
 
 function Sidebar() {
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        // For Google OAuth, a full logout might require clearing cookies/tokens
-        // But for this app, we can just redirect to login or clear local state if any
+    const handleLogout = async () => {
+        try {
+            await logout();
+        } catch (error) {
+            console.error("Logout failed", error);
+        }
         window.location.href = getLoginUrl();
     };
 

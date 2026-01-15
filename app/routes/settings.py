@@ -42,3 +42,33 @@ async def get_gemini_status():
         message="Gemini AI enabled" if configured else "Gemini not configured. POST API key to /settings/gemini",
         configured=configured
     )
+
+
+@router.post("/reset", tags=["Admin"])
+async def hard_reset():
+    """
+    Emergency Data Reset
+    Deletes: summaries.json, google_token.json, google_credentials.json
+    """
+    import os
+    
+    deleted = []
+    base_path = os.path.dirname(os.path.dirname(__file__))
+    data_dir = os.path.join(base_path, "data")
+    
+    files_to_delete = ["summaries.json", "google_token.json", "google_credentials.json", "config.json"]
+    
+    for filename in files_to_delete:
+        path = os.path.join(data_dir, filename)
+        if os.path.exists(path):
+            try:
+                os.remove(path)
+                deleted.append(filename)
+            except Exception as e:
+                print(f"Error deleting {filename}: {e}")
+                
+    return {
+        "success": True, 
+        "message": "System reset successfully",
+        "deleted_files": deleted
+    }
