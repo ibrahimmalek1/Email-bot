@@ -1,0 +1,41 @@
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #0f172a;
+    /* Slate 900 base */
+}
+
+.main-content {
+    flex: 1;
+    margin-left: 250px;
+    /* Match Sidebar width */
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #0f172a;
+    position: relative;
+}
+
+.content-container {
+    padding: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100%;
+}
+
+/* Custom Scrollbar for Main Content */
+.main-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.main-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+    background-color: #334155;
+    border-radius: 4px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+    background-color: #475569;
+}

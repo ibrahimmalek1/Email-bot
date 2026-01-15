@@ -1,0 +1,158 @@
+.settings {
+    padding: 2rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.settings h1 {
+    color: #fff;
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+}
+
+.message {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.message.success {
+    background: rgba(34, 197, 94, 0.2);
+    color: #86efac;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.message.error {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.message button {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.settings-section {
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.section-header h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+.status-badge {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    background: rgba(245, 158, 11, 0.2);
+    color: #fcd34d;
+}
+
+.status-badge.active {
+    background: rgba(34, 197, 94, 0.2);
+    color: #86efac;
+}
+
+.section-desc {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.section-desc a {
+    color: #a5b4fc;
+    margin-left: 0.5rem;
+}
+
+.input-group {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.input-group input {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #6366f1;
+}
+
+.input-group button {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.input-group button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.login-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-btn.connected {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.settings-section.danger {
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.danger-btn {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.danger-btn:hover {
+    background: rgba(239, 68, 68, 0.3);
+}

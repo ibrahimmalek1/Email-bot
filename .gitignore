@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Node/Frontend
+node_modules/
+dist/
+.DS_Store
+
+# Project specific secrets
+app/data/gemini_config.json
+app/data/google_credentials.json
+app/data/google_token.json
+app/data/summaries.json
+credentials.json
+token.json
+*.log
+
+# IDE
+.vscode/
+.idea/
